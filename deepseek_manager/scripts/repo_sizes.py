@@ -21,8 +21,8 @@ def get_deepseek_repo_sizes(sort_by: str = 'asc') -> List[Tuple[str, int]]:
     repo_sizes = []
     for repo in tqdm(repos, desc="Fetching repository sizes"):
         try:
-            # Get full model info to access size data
-            full_info = api.model_info(repo.modelId)
+            # Get full model info with file metadata
+            full_info = api.model_info(repo.modelId, files_metadata=True)
             
             # Calculate total size from all files
             total_size = sum(

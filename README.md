@@ -246,6 +246,7 @@ A complete solution for managing DeepSeek AI models locally
 ## Prerequisites
 - Python 3.10+
 - Git LFS
+- 8TB+ free disk space (for full repository set)
 - NVIDIA GPU (recommended)
 - 8GB+ RAM (16GB+ for larger models)
 
@@ -283,16 +284,29 @@ python -m deepseek_manager.scripts.run_model \
   --quant 4bit \
   --max-tokens 500
 
+# Check actual repository sizes
+python -m deepseek_manager.scripts.repo_sizes --sort desc --top 10
+
 # Display repository sizes
 python -m deepseek_manager.scripts.repo_sizes --sort desc --top 10
 ```
 
 ## Script Overview
 
-| Script                  | Description                                 |
-|-------------------------|---------------------------------------------|
-| `download_repos.py`     | Download models from Hugging Face           |
-| `selective_extract.py`  | Extract downloaded models                   |
-| `verify_archives.py`     | Validate downloaded model bundles           |
-| `repo_sizes.py`         | Display repository sizes from Hugging Face  |
-| `run_model.py`          | Run inference on extracted models          | 
+| Script                  | Description                                                                 |
+|-------------------------|-----------------------------------------------------------------------------|
+| `download_repos.py`     | Download models from Hugging Face (7.27TB total for all repositories)       |
+| `selective_extract.py`  | Extract downloaded models                                                   |
+| `verify_archives.py`    | Validate downloaded model bundles                                           |
+| `repo_sizes.py`         | Display accurate repository sizes (e.g. 641GB for DeepSeek-R1 repositories) |
+| `run_model.py`          | Run inference on extracted models                                              |
+
+## Features
+- Download models from Hugging Face
+- Manage large repositories:
+  - DeepSeek-R1: 641.31GB
+  - DeepSeek-V2-Chat: 439.11GB
+  - deepseek-coder-33b-instruct: 124.21GB
+- Verify model integrity
+- Extract models for local use
+- Run models with different configurations 

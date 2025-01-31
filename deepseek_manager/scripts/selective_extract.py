@@ -8,8 +8,6 @@ from .common import RepoManager, get_archive_format, validate_repo, REPOS_DIR
 
 # Add parent directory to path to import utils
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from utils.common import RepoManager
-from .extract_repos import extract_archive
 
 def extract_selected_repos(repo_ids: List[str], repo_manager: RepoManager):
     """Extract specific repositories from the archives."""
@@ -83,11 +81,10 @@ def selective_extract(force=False):
             
     return extracted, skipped, errors
 
-def extract_from_bundle(bundle_path: Path, target_dir: Path):
+def extract_from_bundle(bundle_path, target_dir):
     """Properly extract from Git bundle"""
-    # Convert to Path if somehow passed as string
-    target_dir = Path(target_dir)
     bundle_path = Path(bundle_path)
+    target_dir = Path(target_dir)
     
     target_dir.mkdir(parents=True, exist_ok=True)
     

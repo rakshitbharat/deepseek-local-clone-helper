@@ -21,9 +21,19 @@ def get_deepseek_repo_sizes(sort_by: str = 'asc') -> List[Tuple[str, int]]:
     repo_sizes = []
     for repo in tqdm(repos, desc="Fetching repository sizes"):
         try:
-            # Sum all file sizes, handling potential None values
-            total_size = sum((sibling.size or 0) for sibling in repo.siblings)
-            repo_sizes.append((repo.modelId, total_size))
+            # Get full model info to access size data
+            full_info = api.model_info(repo.modelId)
+            
+            # Calculate total size from all files
+            total_size = sum(
+                (sibling.size or 0) 
+                for sibling in full_info.siblings
+                if sibling.rfilename not in ['.gitattributes', 'README.md']
+            )
+            
+            if total_size > 0:
+                repo_sizes.append((repo.modelId, total_size))
+                
         except Exception as e:
             print(f"\nError processing {repo.modelId}: {str(e)}")
             continue

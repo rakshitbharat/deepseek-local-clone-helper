@@ -282,6 +282,9 @@ python -m deepseek_manager.scripts.run_model \
   --model deepseek-coder-7b-instruct \
   --quant 4bit \
   --max-tokens 500
+
+# Display repository sizes
+python -m deepseek_manager.scripts.repo_sizes --sort desc --top 10
 ```
 
 ## Script Overview
@@ -291,4 +294,5 @@ python -m deepseek_manager.scripts.run_model \
 | `download_repos.py`     | Download models from Hugging Face           |
 | `selective_extract.py`  | Extract downloaded models                   |
 | `verify_archives.py`     | Validate downloaded model bundles           |
+| `repo_sizes.py`         | Display repository sizes from Hugging Face  |
 | `run_model.py`          | Run inference on extracted models          | 

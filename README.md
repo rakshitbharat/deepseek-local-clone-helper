@@ -4,309 +4,185 @@
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![HuggingFace](https://img.shields.io/badge/🤗-HuggingFace-yellow.svg)](https://huggingface.co/deepseek-ai)
 
-A specialized tool for efficiently cloning and managing DeepSeek AI repositories from Hugging Face using Git bundle format.
+A comprehensive tool for managing DeepSeek AI repositories from Hugging Face, including downloading, mirroring, verification, and local execution capabilities.
 
 ## 📑 Table of Contents
 
-- [Key Features](#-key-features)
-- [Architecture](#-architecture)
-- [Quick Start](#-quick-start)
-- [Core Operations](#-core-operations)
-- [Advanced Usage](#-advanced-usage)
-- [Verification Process](#-verification-process)
+- [Features](#-features)
+- [Prerequisites](#-prerequisites)
+- [Installation](#-installation)
+- [Core Scripts](#-core-scripts)
+- [Usage Examples](#-usage-examples)
+- [Advanced Operations](#-advanced-operations)
 - [Troubleshooting](#-troubleshooting)
-- [Project Structure](#-project-structure)
-- [Contributing](#-contributing)
-- [License](#-license)
-- [📜 Command Reference](#-command-reference)
 
-## ✨ Key Features
+## ✨ Features
 
-- **Git Bundle Storage**: Stores repositories as Git bundles for efficient cloning
-- **LFS Readiness Check**: Verifies LFS configuration before extraction
-- **Selective Extraction**: Extract specific repositories on demand
-- **Integrity Verification**: Validates bundle structure and completeness
-- **Space Efficiency**: Bundles are 30-50% smaller than full clones
-- **Windows Support**: Robust handling of file permissions and pathing
+- **Repository Management**
+  - Download repositories from Hugging Face
+  - Mirror repositories to another account
+  - Create efficient Git bundles
+  - Selective repository extraction
+  - Space-efficient storage
+  
+- **Verification & Maintenance**
+  - Archive integrity verification
+  - Repository size analysis
+  - Bundle validation
+  - LFS support verification
+  
+- **Model Execution**
+  - Local model inference
+  - Quantization support
+  - Configurable parameters
+  - Memory-efficient execution
 
-## 🏗️ Architecture
+## 🔧 Prerequisites
 
-```mermaid
-graph TD
-    A[HF Repositories] -->|Git Bundle Clone| B[Bundle Storage]
-    B --> C{Verification}
-    C -->|Valid| D[Extraction Ready]
-    C -->|Invalid| E[Re-download]
-    D --> F[LFS Initialization]
-    F --> G[Working Repository]
-```
+- Python 3.7+
+- Git with LFS support
+- Hugging Face account (for some operations)
+- Sufficient storage space (varies by model)
+- NVIDIA GPU (recommended for model execution)
 
-## 🚀 Quick Start
+## 📦 Installation
 
 ```bash
-# Clone the manager
-git clone https://github.com/rakshitbharat/deepseek-local-clone-helper.git
-cd deepseek-local-clone-helper
+# Clone the repository
+git clone <repository-url>
+cd deepseek-manager
 
 # Install dependencies
 pip install -r requirements.txt
 
-# Download all repositories (uses Git bundle format)
+# Verify installation
+python -m deepseek_manager.scripts.verify_archives
+```
+
+## 🛠️ Core Scripts
+
+| Script | Description | Key Features |
+|--------|-------------|--------------|
+| `clean_hf_account.py` | Clean Hugging Face account | - Delete all repositories<br>- Selective deletion<br>- Safety confirmations |
+| `download_repos.py` | Download repositories | - Parallel downloads<br>- Resume support<br>- Progress tracking |
+| `mirror_repos.py` | Mirror repositories | - Account-to-account mirroring<br>- LFS handling<br>- Automatic cleanup |
+| `extract_repos.py` | Extract repositories | - Selective extraction<br>- Validation checks<br>- LFS support |
+| `repo_sizes.py` | Analyze repository sizes | - Size calculations<br>- Sorting options<br>- Human-readable output |
+| `run_model.py` | Execute models | - Multiple quantization options<br>- Interactive mode<br>- Configuration options |
+| `selective_extract.py` | Targeted extraction | - Repository selection<br>- Bundle verification<br>- Extraction validation |
+| `verify_archives.py` | Verify archive integrity | - Bundle validation<br>- LFS checks<br>- Metadata verification |
+| `verify_repos.py` | Repository verification | - Git integrity checks<br>- LFS validation<br>- Detailed reporting |
+
+## 🚀 Usage Examples
+
+### Basic Operations
+
+```bash
+# Download repositories
 python -m deepseek_manager.scripts.download_repos
 
-# Verify repository bundles
+# Check repository sizes
+python -m deepseek_manager.scripts.repo_sizes --sort desc --top 10
+
+# Extract specific repository
+python -m deepseek_manager.scripts.selective_extract deepseek-ai/deepseek-coder-1.3b-instruct
+
+# Run a model
+python -m deepseek_manager.scripts.run_model --model deepseek-coder-1.3b-instruct --quant 4bit
+```
+
+### Account Management
+
+```bash
+# Clean Hugging Face account
+python -m deepseek_manager.scripts.clean_hf_account --target-user YOUR_USERNAME --hf-token YOUR_TOKEN
+
+# Mirror repositories
+python -m deepseek_manager.scripts.mirror_repos --target-user TARGET_USER --hf-token YOUR_TOKEN
+```
+
+### Verification Operations
+
+```bash
+# Verify all archives
+python -m deepseek_manager.scripts.verify_archives
+
+# Check repository integrity
 python -m deepseek_manager.scripts.verify_repos
 
-# Extract a specific repository
-python -m deepseek_manager.scripts.selective_extract deepseek-ai/deepseek-coder-33b-instruct
+# Analyze repository sizes
+python -m deepseek_manager.scripts.repo_sizes --sort desc
 ```
 
-## 🛠️ Core Operations
+## 🔄 Advanced Operations
 
-### Bundle Management
+### Custom Download Options
+
 ```bash
-# List available repositories
-python -m deepseek_manager.scripts.selective_extract --list
+# Download with specific workers
+python -m deepseek_manager.scripts.download_repos --workers 4
 
-# Force re-download of all repositories
+# Download specific repositories
+python -m deepseek_manager.scripts.download_repos --repo deepseek-ai/deepseek-coder-1.3b-instruct
+
+# Force re-download
 python -m deepseek_manager.scripts.download_repos --force
-
-# Validate single repository
-python -m deepseek_manager.scripts.verify_repos deepseek-ai/deepseek-coder-33b-instruct
 ```
 
-### Space Optimization
+### Model Execution Options
+
 ```bash
-# Clean extracted repositories
-python -m deepseek_manager.scripts.cleanup --remove-extracted
+# Run with 4-bit quantization
+python -m deepseek_manager.scripts.run_model --quant 4bit --max-tokens 500
 
-# Remove invalid bundles
-python -m deepseek_manager.scripts.cleanup --remove-invalid
+# Run with 8-bit quantization
+python -m deepseek_manager.scripts.run_model --quant 8bit --temperature 0.7
 
-# Estimate storage needs
-python -m deepseek_manager.scripts.storage_report
+# Run without quantization
+python -m deepseek_manager.scripts.run_model --quant none
 ```
 
-## 🔍 Verification Process
-
-The verification system checks:
-1. Bundle file integrity
-2. Git object consistency
-3. LFS configuration
-4. Metadata completeness
-5. File permission validity
-
-Sample verification output:
-```text
-Verifying 68 repositories...
-
-✅ Valid Bundles: 65
-❌ Invalid Bundles: 3
-⚠️  LFS Warnings: 12
-
-Issues Detected:
-- deepseek-ai/deepseek-coder-33b-instruct: 
-  • Missing LFS endpoint configuration
-  • 2 invalid object references
-```
-
-## 🚨 Troubleshooting
+## 🔍 Troubleshooting
 
 ### Common Issues
 
-**Bundle Verification Failed**
-```bash
-# Re-download specific repository
-python -m deepseek_manager.scripts.download_repos --repo deepseek-ai/deepseek-coder-33b-instruct
-```
+1. **Permission Errors**
+   ```bash
+   # Fix permissions
+   chmod -R u+w deepseek_storage/
+   ```
 
-**Permission Denied Errors**
-```bash
-# Reset file permissions
-python -m deepseek_manager.scripts.cleanup --fix-permissions
-```
+2. **LFS Issues**
+   ```bash
+   # Reinitialize LFS
+   git lfs install
+   git lfs pull
+   ```
 
-**LFS Configuration Missing**
-```bash
-# Initialize LFS after extraction
-git lfs install
-cd extracted/deepseek-ai/deepseek-coder-33b-instruct
-git lfs pull
-```
+3. **Space Issues**
+   ```bash
+   # Check sizes before downloading
+   python -m deepseek_manager.scripts.repo_sizes --sort desc
+   ```
 
-## 📂 Project Structure
+### Error Messages
 
-```
-deepseek_manager/
-├── scripts/
-│   ├── download_repos.py    # Bundle creation
-│   ├── verify_repos.py      # Integrity checks
-│   ├── selective_extract.py # Partial extraction
-│   └── cleanup.py           # Maintenance tasks
-├── utils/
-│   └── common.py            # Shared utilities
-├── docs/
-│   └── prompts/            # System prompts
-└── deepseek_storage/
-    ├── bundles/             # Git bundle storage
-    └── extracted/          # Active repositories
-```
+- `Repository not found`: Check if the repository ID is correct
+- `LFS not initialized`: Run `git lfs install` first
+- `Invalid bundle`: Try re-downloading the repository
+- `Insufficient space`: Free up space or use selective download
+
+## 📝 Notes
+
+- Always verify archives after downloading
+- Use quantization for large models on limited hardware
+- Keep sufficient free space for extraction operations
+- Regular verification helps maintain repository health
 
 ## 🤝 Contributing
 
-We welcome contributions! Please see our [Contribution Guide](CONTRIBUTING.md) for:
-- Issue reporting guidelines
-- Development setup instructions
-- Code style requirements
-- PR submission process
+Contributions are welcome! Please read our contributing guidelines before submitting pull requests.
 
 ## 📄 License
 
-MIT License - See [LICENSE](LICENSE) for full text.
-
-## 📜 Command Reference
-
-### Core Scripts
-
-| Command | Description | Options |
-|---------|-------------|---------|
-| `download_repos` | Download repositories as Git bundles | `--force` Force re-download<br>`--repo <id>` Download specific repo |
-| `verify_repos` | Validate repository bundles | `--fix` Attempt automatic repairs<br>`--detailed` Full validation report |
-| `selective_extract` | Manage repository extraction | `--list` Show available repos<br>`--validate` Check extraction readiness |
-| `cleanup` | Maintenance operations | `--remove-extracted` Delete extracted copies<br>`--remove-invalid` Purge bad bundles |
-
-### Utility Scripts
-
-```bash
-# Generate storage report
-python -m deepseek_manager.scripts.storage_report
-
-# Check system dependencies
-python -m deepseek_manager.scripts.check_environment
-
-# Migrate old archives to bundle format
-python -m deepseek_manager.scripts.migrate_archives
-
-# Generate API documentation
-python -m deepseek_manager.scripts.generate_docs
-```
-
-### Advanced Options
-
-```bash
-# Set custom storage path
-DEEPSEEK_STORAGE=/custom/path python -m deepseek_manager.scripts.download_repos
-
-# Enable debug logging
-python -m deepseek_manager.scripts.download_repos --log-level DEBUG
-
-# Parallel downloads (4 workers)
-python -m deepseek_manager.scripts.download_repos --workers 4
-
-# Dry run (simulate operations)
-python -m deepseek_manager.scripts.cleanup --dry-run
-```
-
-### Configuration File
-
-Create `config.yaml` in project root:
-
-```yaml
-storage:
-  path: /custom/storage/path
-  max_size: 100GB
-  
-network:
-  timeout: 30
-  retries: 5
-  parallel_downloads: 4
-  
-logging:
-  level: INFO
-  file: deepseek.log
-```
-
----
-
-💡 **Pro Tip**: Use `--help` with any script for detailed usage information:
-```bash
-python -m deepseek_manager.scripts.download_repos --help
-```
-
-# DeepSeek Manager
-
-A complete solution for managing DeepSeek AI models locally
-
-## Features
-- Download models from Hugging Face
-- Verify model integrity
-- Extract models for local use
-- Run models with different configurations
-
-## Prerequisites
-- Python 3.10+
-- Git LFS
-- 8TB+ free disk space (for full repository set)
-- NVIDIA GPU (recommended)
-- 8GB+ RAM (16GB+ for larger models)
-
-## Quick Start
-
-```bash
-# Install requirements
-pip install -r requirements.txt
-
-# Download the smallest model (1.3B)
-python -m deepseek_manager.scripts.download_repos
-
-# Extract the model
-python -m deepseek_manager.scripts.selective_extract
-
-# Run inference
-python -m deepseek_manager.scripts.run_model
-```
-
-## Advanced Usage
-
-```bash
-# Download specific model
-python -m deepseek_manager.scripts.download_repos --repo deepseek-ai/deepseek-coder-7b-instruct
-
-# Verify archives
-python -m deepseek_manager.scripts.verify_archives
-
-# Extract specific model
-python -m deepseek_manager.scripts.selective_extract deepseek-ai_deepseek-coder-7b-instruct
-
-# Run with different options
-python -m deepseek_manager.scripts.run_model \
-  --model deepseek-coder-7b-instruct \
-  --quant 4bit \
-  --max-tokens 500
-
-# Check actual repository sizes
-python -m deepseek_manager.scripts.repo_sizes --sort desc --top 10
-
-# Display repository sizes
-python -m deepseek_manager.scripts.repo_sizes --sort desc --top 10
-```
-
-## Script Overview
-
-| Script                  | Description                                                                 |
-|-------------------------|-----------------------------------------------------------------------------|
-| `download_repos.py`     | Download models from Hugging Face (7.27TB total for all repositories)       |
-| `selective_extract.py`  | Extract downloaded models                                                   |
-| `verify_archives.py`    | Validate downloaded model bundles                                           |
-| `repo_sizes.py`         | Display accurate repository sizes (e.g. 641GB for DeepSeek-R1 repositories) |
-| `run_model.py`          | Run inference on extracted models                                              |
-
-## Features
-- Download models from Hugging Face
-- Manage large repositories:
-  - DeepSeek-R1: 641.31GB
-  - DeepSeek-V2-Chat: 439.11GB
-  - deepseek-coder-33b-instruct: 124.21GB
-- Verify model integrity
-- Extract models for local use
-- Run models with different configurations 
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details. 

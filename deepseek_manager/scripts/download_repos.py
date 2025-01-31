@@ -54,7 +54,7 @@ def main():
     
     # Update argument parser configuration
     parser = argparse.ArgumentParser(description="Download DeepSeek repositories")
-    parser.add_argument("--workers", type=int, default=4,
+    parser.add_argument("--workers", type=int, default=20,
                        help="Number of parallel download workers")
     parser.add_argument("--repo", nargs="+", default=["deepseek-ai/deepseek-coder-1.3b-instruct"],
                        help="Specific repositories to download (space-separated)")
@@ -64,14 +64,39 @@ def main():
     
     # Handle repository selection
     if args.repo:
-        # When using --repo, we get simple strings instead of Model objects
-        repos = [{"modelId": rid} for rid in args.repo]
+        # Fetch detailed info for specified repos
+        api = HfApi()
+        repos = []
+        for rid in args.repo:
+            try:
+                model_info = api.model_info(rid)
+                repos.append(model_info)
+            except RepositoryNotFoundError:
+                print(f"Repository {rid} not found, skipping.")
         print(f"Downloading {len(repos)} specified repositories...")
     else:
         # Get full Model objects from API
         repos = get_repo_list()
         print(f"Downloading all {len(repos)} repositories...")
     
+    # Calculate repository sizes and sort
+    repo_sizes = []
+    for repo in repos:
+        try:
+            # Handle potential None values in size fields
+            total_size = sum((sibling.size or 0) for sibling in repo.siblings)
+            repo_sizes.append((repo.modelId, total_size))
+        except Exception as e:
+            print(f"Error calculating size for {repo.modelId}: {str(e)}")
+            repo_sizes.append((repo.modelId, 0))
+    
+    # Sort by size ascending (smallest first)
+    repo_sizes.sort(key=lambda x: x[1])
+    
+    print("\nRepositories sorted by size:")
+    for repo_id, size in repo_sizes:
+        print(f"- {repo_id}: {size/1024**3:.2f} GB")
+
     def get_deepseek_repos() -> List[Dict]:
         """Fetch list of DeepSeek repositories from Hugging Face."""
         api = HfApi()
@@ -230,9 +255,9 @@ def main():
     
     with ThreadPoolExecutor(max_workers=args.workers) as executor:
         futures = []
-        for repo in repos:
-            # Pass modelId explicitly
-            futures.append(executor.submit(download_repo_wrapper, repo["modelId"], manager))
+        # Process repositories in size-sorted order
+        for repo_id, _ in repo_sizes:
+            futures.append(executor.submit(download_repo_wrapper, repo_id, manager))
         
         successful = 0
         failed = 0

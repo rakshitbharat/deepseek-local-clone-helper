@@ -45,17 +45,19 @@ def validate_repo(repo_path):
 def create_archive(repo_path, output_path):
     """Create self-contained Git bundle with LFS objects"""
     try:
-        # First create the bundle
+        # Create main bundle
+        main_bundle = output_path.with_suffix(".bundle")
         subprocess.run([
             "git", "-C", str(repo_path),
-            "bundle", "create", str(output_path),
+            "bundle", "create", str(main_bundle),
             "--all", "--tags"
         ], check=True)
         
-        # Include LFS objects in the bundle
+        # Create LFS bundle with proper extension
+        lfs_bundle = main_bundle.with_suffix(".bundle.lfs")
         subprocess.run([
             "git", "-C", str(repo_path),
-            "lfs", "bundle", "create", str(output_path) + ".lfs",
+            "lfs", "bundle", "create", str(lfs_bundle),
             "--all"
         ], check=True)
         

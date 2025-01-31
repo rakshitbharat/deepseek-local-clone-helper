@@ -231,4 +231,64 @@ logging:
 💡 **Pro Tip**: Use `--help` with any script for detailed usage information:
 ```bash
 python -m deepseek_manager.scripts.download_repos --help
-``` 
+```
+
+# DeepSeek Manager
+
+A complete solution for managing DeepSeek AI models locally
+
+## Features
+- Download models from Hugging Face
+- Verify model integrity
+- Extract models for local use
+- Run models with different configurations
+
+## Prerequisites
+- Python 3.10+
+- Git LFS
+- NVIDIA GPU (recommended)
+- 8GB+ RAM (16GB+ for larger models)
+
+## Quick Start
+
+```bash
+# Install requirements
+pip install -r requirements.txt
+
+# Download the smallest model (1.3B)
+python -m deepseek_manager.scripts.download_repos
+
+# Extract the model
+python -m deepseek_manager.scripts.selective_extract
+
+# Run inference
+python -m deepseek_manager.scripts.run_model
+```
+
+## Advanced Usage
+
+```bash
+# Download specific model
+python -m deepseek_manager.scripts.download_repos --repo deepseek-ai/deepseek-coder-7b-instruct
+
+# Verify archives
+python -m deepseek_manager.scripts.verify_archives
+
+# Extract specific model
+python -m deepseek_manager.scripts.selective_extract deepseek-ai_deepseek-coder-7b-instruct
+
+# Run with different options
+python -m deepseek_manager.scripts.run_model \
+  --model deepseek-coder-7b-instruct \
+  --quant 4bit \
+  --max-tokens 500
+```
+
+## Script Overview
+
+| Script                  | Description                                 |
+|-------------------------|---------------------------------------------|
+| `download_repos.py`     | Download models from Hugging Face           |
+| `selective_extract.py`  | Extract downloaded models                   |
+| `verify_archives.py`     | Validate downloaded model bundles           |
+| `run_model.py`          | Run inference on extracted models          | 

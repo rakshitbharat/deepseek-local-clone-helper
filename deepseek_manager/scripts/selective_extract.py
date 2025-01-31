@@ -89,21 +89,22 @@ def extract_from_bundle(bundle_path, target_dir):
     bundle_path = Path(bundle_path)
     target_dir = Path(target_dir)
     
-    target_dir.mkdir(parents=True, exist_ok=True)
-
-    # Add proper LFS bundle detection
-    lfs_bundle = Path(str(bundle_path) + ".lfs")
+    # Get LFS bundle path
+    lfs_bundle = bundle_path.with_suffix(".bundle.lfs")
+    
     if not lfs_bundle.exists():
         raise FileNotFoundError(f"Missing LFS bundle: {lfs_bundle}")
+    
+    target_dir.mkdir(parents=True, exist_ok=True)
 
-    # Clone repository structure
+    # Clone with LFS config
     subprocess.run([
         "git", "clone", str(bundle_path), str(target_dir),
         "--local",
         "--config", f"lfs.bundle.uri={lfs_bundle}"
     ], check=True)
 
-    # Critical missing step: Import LFS objects
+    # Import LFS objects
     subprocess.run([
         "git", "lfs", "bundle", "import", str(lfs_bundle),
         "--everything"

@@ -3,4 +3,4 @@ accelerate>=0.30.0
 bitsandbytes>=0.43.0
 tqdm>=4.66.0
 huggingface-hub>=0.22.0
-torch>=2.3.0 
+torch>=2.2.2

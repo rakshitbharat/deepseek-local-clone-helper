@@ -1,6 +1,7 @@
 import sys
 import os
 import tarfile
+import subprocess
 from typing import List
 from tqdm import tqdm
 
@@ -9,12 +10,13 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from utils.common import RepoManager
 
 def extract_archive(archive_path: str, extract_path: str) -> bool:
-    """Extract a tar.gz archive to the specified path."""
+    """Extract a git bundle to the specified path."""
     try:
-        with tarfile.open(archive_path, "r:gz") as tar:
-            tar.extractall(path=extract_path)
+        subprocess.run([
+            "git", "clone", str(archive_path), str(extract_path)
+        ], check=True)
         return True
-    except Exception as e:
+    except subprocess.CalledProcessError as e:
         print(f"Error extracting {archive_path}: {str(e)}")
         return False
 

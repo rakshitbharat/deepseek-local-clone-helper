@@ -3,6 +3,8 @@ import os
 from pathlib import Path
 from typing import List
 
+REPOS_DIR = "deepseek_storage/extracted"
+
 def get_archive_format(path):
     """Detect archive format from file extension"""
     if str(path).endswith(".zip"):
@@ -57,7 +59,9 @@ class RepoManager:
     def __init__(self):
         self.base_dir = "deepseek_storage"
         self.archives_dir = os.path.join(self.base_dir, "archives")
+        self.extracted_dir = REPOS_DIR
         os.makedirs(self.archives_dir, exist_ok=True)
+        os.makedirs(self.extracted_dir, exist_ok=True)
 
     def get_archive_path(self, repo_id: str) -> Path:
         """Get path for bundle file"""
@@ -66,4 +70,8 @@ class RepoManager:
 
     def get_downloaded_repos(self) -> List[str]:
         """Get list of downloaded repositories"""
-        return [f.stem.replace(".bundle", "") for f in Path(self.archives_dir).glob("*.bundle")] 
+        return [f.stem.replace(".bundle", "") for f in Path(self.archives_dir).glob("*.bundle")]
+
+    def get_extraction_path(self, repo_id: str) -> Path:
+        safe_name = repo_id.replace("/", "_")
+        return Path(self.extracted_dir) / safe_name 

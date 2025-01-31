@@ -4,12 +4,12 @@ import argparse
 from typing import List
 import subprocess
 from pathlib import Path
-from .common import REPOS_DIR, get_archive_format, validate_repo
+from .common import RepoManager, get_archive_format, validate_repo, REPOS_DIR
 
 # Add parent directory to path to import utils
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from utils.common import RepoManager
-from extract_repos import extract_archive
+from .extract_repos import extract_archive
 
 def extract_selected_repos(repo_ids: List[str], repo_manager: RepoManager):
     """Extract specific repositories from the archives."""
@@ -35,7 +35,7 @@ def extract_selected_repos(repo_ids: List[str], repo_manager: RepoManager):
             continue
         
         print(f"Extracting {repo_id}...")
-        if extract_archive(archive_path, extract_path):
+        if extract_from_bundle(archive_path, extract_path):
             successful += 1
         else:
             failed += 1
@@ -85,31 +85,28 @@ def selective_extract(force=False):
 
 def extract_from_bundle(bundle_path: Path, target_dir: Path):
     """Properly extract from Git bundle"""
-    target_dir.mkdir(exist_ok=True)
+    # Convert to Path if somehow passed as string
+    target_dir = Path(target_dir)
+    bundle_path = Path(bundle_path)
+    
+    target_dir.mkdir(parents=True, exist_ok=True)
     
     # Initialize new repository
-    subprocess.run(["git", "init"], cwd=target_dir, check=True)
+    subprocess.run(["git", "init"], cwd=str(target_dir), check=True)
     
     # Add bundle as origin
     subprocess.run(
-        ["git", "remote", "add", "origin", str(bundle_path)],
-        cwd=target_dir,
+        ["git", "remote", "add", "origin", str(bundle_path.resolve())],
+        cwd=str(target_dir),
         check=True
     )
     
     # Fetch all references
-    subprocess.run(
-        ["git", "fetch", "origin"],
-        cwd=target_dir,
-        check=True
-    )
+    subprocess.run(["git", "fetch", "origin"], cwd=str(target_dir), check=True)
     
     # Reset working copy
-    subprocess.run(
-        ["git", "reset", "--hard", "HEAD"],
-        cwd=target_dir,
-        check=True
-    )
+    subprocess.run(["git", "reset", "--hard", "HEAD"], cwd=str(target_dir), check=True)
+    return True
 
 def main():
     parser = argparse.ArgumentParser(description="Selectively extract DeepSeek repositories")
@@ -137,8 +134,4 @@ def main():
     extract_selected_repos(args.repos, repo_manager)
 
 if __name__ == "__main__":
-    extracted, skipped, errors = selective_extract()
-    print(f"Extracted: {len(extracted)}, Skipped: {len(skipped)}, Errors: {len(errors)}")
-    if errors:
-        print("\nErrors:")
-        print("\n".join(errors)) 
+    main() 

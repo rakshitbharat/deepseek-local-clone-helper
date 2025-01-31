@@ -19,8 +19,11 @@ def extract_selected_repos(repo_ids: List[str], repo_manager: RepoManager):
     downloaded_repos = repo_manager.get_downloaded_repos()
     
     for repo_id in repo_ids:
-        if repo_id not in downloaded_repos:
-            print(f"Repository not found: {repo_id}")
+        # Normalize repository ID to match bundle filename format
+        normalized_id = repo_id.replace("/", "_")
+        
+        if normalized_id not in downloaded_repos:
+            print(f"Repository not found: {repo_id} (looking for: {normalized_id}.bundle)")
             not_found += 1
             continue
         
@@ -82,27 +85,33 @@ def selective_extract(force=False):
     return extracted, skipped, errors
 
 def extract_from_bundle(bundle_path, target_dir):
-    """Properly extract from Git bundle"""
+    """Offline extraction from self-contained Git bundle"""
     bundle_path = Path(bundle_path)
     target_dir = Path(target_dir)
     
     target_dir.mkdir(parents=True, exist_ok=True)
+
+    # Add proper LFS bundle detection
+    lfs_bundle = Path(str(bundle_path) + ".lfs")
+    if not lfs_bundle.exists():
+        raise FileNotFoundError(f"Missing LFS bundle: {lfs_bundle}")
+
+    # Clone repository structure
+    subprocess.run([
+        "git", "clone", str(bundle_path), str(target_dir),
+        "--local",
+        "--config", f"lfs.bundle.uri={lfs_bundle}"
+    ], check=True)
+
+    # Critical missing step: Import LFS objects
+    subprocess.run([
+        "git", "lfs", "bundle", "import", str(lfs_bundle),
+        "--everything"
+    ], cwd=str(target_dir), check=True)
+
+    # Final checkout
+    subprocess.run(["git", "lfs", "checkout"], cwd=str(target_dir), check=True)
     
-    # Initialize new repository
-    subprocess.run(["git", "init"], cwd=str(target_dir), check=True)
-    
-    # Add bundle as origin
-    subprocess.run(
-        ["git", "remote", "add", "origin", str(bundle_path.resolve())],
-        cwd=str(target_dir),
-        check=True
-    )
-    
-    # Fetch all references
-    subprocess.run(["git", "fetch", "origin"], cwd=str(target_dir), check=True)
-    
-    # Reset working copy
-    subprocess.run(["git", "reset", "--hard", "HEAD"], cwd=str(target_dir), check=True)
     return True
 
 def main():

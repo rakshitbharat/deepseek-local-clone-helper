@@ -43,17 +43,26 @@ def validate_repo(repo_path):
     return all(checks)
 
 def create_archive(repo_path, output_path):
-    """Create more reliable Git bundle archives"""
+    """Create self-contained Git bundle with LFS objects"""
     try:
+        # First create the bundle
         subprocess.run([
             "git", "-C", str(repo_path),
             "bundle", "create", str(output_path),
+            "--all", "--tags"
+        ], check=True)
+        
+        # Include LFS objects in the bundle
+        subprocess.run([
+            "git", "-C", str(repo_path),
+            "lfs", "bundle", "create", str(output_path) + ".lfs",
             "--all"
         ], check=True)
+        
         return True
     except subprocess.CalledProcessError as e:
         print(f"Archive creation failed: {str(e)}")
-        return False 
+        return False
 
 class RepoManager:
     def __init__(self):
@@ -70,7 +79,7 @@ class RepoManager:
 
     def get_downloaded_repos(self) -> List[str]:
         """Get list of downloaded repositories"""
-        return [f.stem.replace(".bundle", "") for f in Path(self.archives_dir).glob("*.bundle")]
+        return [f.stem for f in Path(self.archives_dir).glob("*.bundle")]
 
     def get_extraction_path(self, repo_id: str) -> Path:
         safe_name = repo_id.replace("/", "_")

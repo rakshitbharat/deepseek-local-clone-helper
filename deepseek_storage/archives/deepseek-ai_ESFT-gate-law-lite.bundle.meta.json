@@ -1,0 +1,56 @@
+{
+  "repo_id": "deepseek-ai/ESFT-gate-law-lite",
+  "size": 1441174,
+  "size_mb": 1.37,
+  "download_date": "2025-01-31 22:53:04.311576",
+  "git_archive": true,
+  "lfs_info": {
+    "has_lfs": true,
+    "lfs_patterns": [
+      "*.7z",
+      "*.arrow",
+      "*.bin",
+      "*.bz2",
+      "*.ckpt",
+      "*.ftz",
+      "*.gz",
+      "*.h5",
+      "*.joblib",
+      "*.lfs.*",
+      "*.mlmodel",
+      "*.model",
+      "*.msgpack",
+      "*.npy",
+      "*.npz",
+      "*.onnx",
+      "*.ot",
+      "*.parquet",
+      "*.pb",
+      "*.pickle",
+      "*.pkl",
+      "*.pt",
+      "*.pth",
+      "*.rar",
+      "*.safetensors",
+      "saved_model/**/*",
+      "*.tar.*",
+      "*.tar",
+      "*.tflite",
+      "*.tgz",
+      "*.wasm",
+      "*.xz",
+      "*.zip",
+      "*.zst",
+      "*tfevents*"
+    ]
+  },
+  "bundle_checksum": "f09e6d54e38e12f57921cf0609252acc7f96e986cefafa3e5fca4c470c99d002",
+  "git_version": "git version 2.47.1.windows.2",
+  "bundle_format": "git-bundle-v2",
+  "estimated_size": {
+    "parameters": {
+      "BF16": 1652293632
+    },
+    "total": 1652293632
+  }
+}

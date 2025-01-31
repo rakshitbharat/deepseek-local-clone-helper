@@ -1,0 +1,56 @@
+{
+  "repo_id": "deepseek-ai/deepseek-vl-1.3b-base",
+  "size": 1421835,
+  "size_mb": 1.36,
+  "download_date": "2025-01-31 22:52:47.598207",
+  "git_archive": true,
+  "lfs_info": {
+    "has_lfs": true,
+    "lfs_patterns": [
+      "*.7z",
+      "*.arrow",
+      "*.bin",
+      "*.bz2",
+      "*.ckpt",
+      "*.ftz",
+      "*.gz",
+      "*.h5",
+      "*.joblib",
+      "*.lfs.*",
+      "*.mlmodel",
+      "*.model",
+      "*.msgpack",
+      "*.npy",
+      "*.npz",
+      "*.onnx",
+      "*.ot",
+      "*.parquet",
+      "*.pb",
+      "*.pickle",
+      "*.pkl",
+      "*.pt",
+      "*.pth",
+      "*.rar",
+      "*.safetensors",
+      "saved_model/**/*",
+      "*.tar.*",
+      "*.tar",
+      "*.tflite",
+      "*.tgz",
+      "*.wasm",
+      "*.xz",
+      "*.zip",
+      "*.zst",
+      "*tfevents*"
+    ]
+  },
+  "bundle_checksum": "d0db9f2e8cba169d4e8d3d97c060f7a181fb8b9aa29c70d6ca7d5395dfa2956c",
+  "git_version": "git version 2.47.1.windows.2",
+  "bundle_format": "git-bundle-v2",
+  "estimated_size": {
+    "parameters": {
+      "F16": 1975235584
+    },
+    "total": 1975235584
+  }
+}

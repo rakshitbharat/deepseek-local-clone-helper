@@ -1,0 +1,56 @@
+{
+  "repo_id": "deepseek-ai/deepseek-coder-6.7b-base",
+  "size": 413355,
+  "size_mb": 0.39,
+  "download_date": "2025-01-31 22:52:13.598402",
+  "git_archive": true,
+  "lfs_info": {
+    "has_lfs": true,
+    "lfs_patterns": [
+      "*.7z",
+      "*.arrow",
+      "*.bin",
+      "*.bz2",
+      "*.ckpt",
+      "*.ftz",
+      "*.gz",
+      "*.h5",
+      "*.joblib",
+      "*.lfs.*",
+      "*.mlmodel",
+      "*.model",
+      "*.msgpack",
+      "*.npy",
+      "*.npz",
+      "*.onnx",
+      "*.ot",
+      "*.parquet",
+      "*.pb",
+      "*.pickle",
+      "*.pkl",
+      "*.pt",
+      "*.pth",
+      "*.rar",
+      "*.safetensors",
+      "saved_model/**/*",
+      "*.tar.*",
+      "*.tar",
+      "*.tflite",
+      "*.tgz",
+      "*.wasm",
+      "*.xz",
+      "*.zip",
+      "*.zst",
+      "*tfevents*"
+    ]
+  },
+  "bundle_checksum": "9e414428460c12242cd7963953eeef4421d191052989c53e1ed5aeebf7d9842e",
+  "git_version": "git version 2.47.1.windows.2",
+  "bundle_format": "git-bundle-v2",
+  "estimated_size": {
+    "parameters": {
+      "BF16": 6740512768
+    },
+    "total": 6740512768
+  }
+}

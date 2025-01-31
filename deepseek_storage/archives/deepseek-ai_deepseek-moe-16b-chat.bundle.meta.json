@@ -1,0 +1,56 @@
+{
+  "repo_id": "deepseek-ai/deepseek-moe-16b-chat",
+  "size": 1449513,
+  "size_mb": 1.38,
+  "download_date": "2025-01-31 22:52:30.004107",
+  "git_archive": true,
+  "lfs_info": {
+    "has_lfs": true,
+    "lfs_patterns": [
+      "*.7z",
+      "*.arrow",
+      "*.bin",
+      "*.bz2",
+      "*.ckpt",
+      "*.ftz",
+      "*.gz",
+      "*.h5",
+      "*.joblib",
+      "*.lfs.*",
+      "*.mlmodel",
+      "*.model",
+      "*.msgpack",
+      "*.npy",
+      "*.npz",
+      "*.onnx",
+      "*.ot",
+      "*.parquet",
+      "*.pb",
+      "*.pickle",
+      "*.pkl",
+      "*.pt",
+      "*.pth",
+      "*.rar",
+      "*.safetensors",
+      "saved_model/**/*",
+      "*.tar.*",
+      "*.tar",
+      "*.tflite",
+      "*.tgz",
+      "*.wasm",
+      "*.xz",
+      "*.zip",
+      "*.zst",
+      "*tfevents*"
+    ]
+  },
+  "bundle_checksum": "f7bac6ca0c615f6d707cb3722a97e02476937b90008e42dbc79a678a063aef3e",
+  "git_version": "git version 2.47.1.windows.2",
+  "bundle_format": "git-bundle-v2",
+  "estimated_size": {
+    "parameters": {
+      "BF16": 16375728128
+    },
+    "total": 16375728128
+  }
+}

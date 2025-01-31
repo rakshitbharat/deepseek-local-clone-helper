@@ -1,0 +1,56 @@
+{
+  "repo_id": "deepseek-ai/ESFT-token-law-lite",
+  "size": 1440950,
+  "size_mb": 1.37,
+  "download_date": "2025-01-31 22:53:07.094418",
+  "git_archive": true,
+  "lfs_info": {
+    "has_lfs": true,
+    "lfs_patterns": [
+      "*.7z",
+      "*.arrow",
+      "*.bin",
+      "*.bz2",
+      "*.ckpt",
+      "*.ftz",
+      "*.gz",
+      "*.h5",
+      "*.joblib",
+      "*.lfs.*",
+      "*.mlmodel",
+      "*.model",
+      "*.msgpack",
+      "*.npy",
+      "*.npz",
+      "*.onnx",
+      "*.ot",
+      "*.parquet",
+      "*.pb",
+      "*.pickle",
+      "*.pkl",
+      "*.pt",
+      "*.pth",
+      "*.rar",
+      "*.safetensors",
+      "saved_model/**/*",
+      "*.tar.*",
+      "*.tar",
+      "*.tflite",
+      "*.tgz",
+      "*.wasm",
+      "*.xz",
+      "*.zip",
+      "*.zst",
+      "*tfevents*"
+    ]
+  },
+  "bundle_checksum": "269fcebac046fa80a98562fcf903a17eedc1973f33d094caff78f20ee13eacd4",
+  "git_version": "git version 2.47.1.windows.2",
+  "bundle_format": "git-bundle-v2",
+  "estimated_size": {
+    "parameters": {
+      "BF16": 1479278592
+    },
+    "total": 1479278592
+  }
+}

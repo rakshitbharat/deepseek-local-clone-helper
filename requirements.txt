@@ -1,0 +1,4 @@
+requests>=2.31.0
+tqdm>=4.66.1
+typing-extensions>=4.8.0  # For better type hints support
+huggingface_hub>=0.20.3  # For proper Hugging Face API access 

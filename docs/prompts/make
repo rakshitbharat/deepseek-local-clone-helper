@@ -1,0 +1,10 @@
+@download_repos.py @extract_repos.py @selective_extract.py @verify_repos.py @common.py @utils @download_deepseek_repos.py @CONTRIBUTING.md @project_structure.txt @README.md @requirements.txt @LICENSE 
+check this all files
+
+we are aiming to download all things from hugginface of deepseek but in a compressed version but we have to be very sure about all the things that in future when we extract the archives we dont have any problem
+currently we are not having that much of infra that when we do git clone and enabled 
+# Make sure you have git-lfs installed (https://git-lfs.com)
+git lfs install
+we are not having the resources to even extract the repo and we dont have that much space
+so current goal is to download all git repos from hugginface and use
+git lfs later 

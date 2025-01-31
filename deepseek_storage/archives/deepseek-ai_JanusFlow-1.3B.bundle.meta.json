@@ -1,0 +1,57 @@
+{
+  "repo_id": "deepseek-ai/JanusFlow-1.3B",
+  "size": 1661295,
+  "size_mb": 1.58,
+  "download_date": "2025-01-31 22:51:25.022354",
+  "git_archive": true,
+  "lfs_info": {
+    "has_lfs": true,
+    "lfs_patterns": [
+      "*.7z",
+      "*.arrow",
+      "*.bin",
+      "*.bz2",
+      "*.ckpt",
+      "*.ftz",
+      "*.gz",
+      "*.h5",
+      "*.joblib",
+      "*.lfs.*",
+      "*.mlmodel",
+      "*.model",
+      "*.msgpack",
+      "*.npy",
+      "*.npz",
+      "*.onnx",
+      "*.ot",
+      "*.parquet",
+      "*.pb",
+      "*.pickle",
+      "*.pkl",
+      "*.pt",
+      "*.pth",
+      "*.rar",
+      "*.safetensors",
+      "saved_model/**/*",
+      "*.tar.*",
+      "*.tar",
+      "*.tflite",
+      "*.tgz",
+      "*.wasm",
+      "*.xz",
+      "*.zip",
+      "*.zst",
+      "*tfevents*",
+      "teaser.png"
+    ]
+  },
+  "bundle_checksum": "40a9886f4ed1d843e5d9b91c73f34f25f5e8bc730b76ede476e12c9c9c7b0626",
+  "git_version": "git version 2.47.1.windows.2",
+  "bundle_format": "git-bundle-v2",
+  "estimated_size": {
+    "parameters": {
+      "BF16": 2046367504
+    },
+    "total": 2046367504
+  }
+}

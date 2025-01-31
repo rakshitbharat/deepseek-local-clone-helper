@@ -1,0 +1,12 @@
+deepseek_manager/
+├── scripts/
+│   ├── __init__.py
+│   ├── download_repos.py
+│   ├── verify_repos.py
+│   ├── extract_repos.py
+│   └── selective_extract.py
+├── utils/
+│   ├── __init__.py
+│   └── common.py
+├── requirements.txt
+└── README.md 
